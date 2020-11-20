@@ -290,6 +290,7 @@ micro_global <- function(
   loc = c(-89.40123, 43.07305),
   timeinterval = 12,
   nyears = 1,
+  doys = c(15, 46, 74, 105, 135, 166, 196, 227, 258, 288, 319, 349),
   soiltype = 4,
   REFL = 0.15,
   elev = NA,
@@ -548,11 +549,10 @@ micro_global <- function(
 
     ################## time related variables #################################
 
-    doys12<-c(15, 46, 74, 105, 135, 166, 196, 227, 258, 288, 319, 349) # middle day of each month
-    doysn<-doys12 # variable of doys for when doing multiple years
+    doysn<-doys # variable of doys for when doing multiple years
     if(nyears>1 & timeinterval==365){ # create sequence of days for splining across multiple years
       for(i in 1:(nyears-1)){
-        doysn<-c(doysn,(doys12+365*i))
+        doysn<-c(doysn,(doys+365*i))
       }
     }
 
@@ -769,23 +769,23 @@ micro_global <- function(
     TMAXX <- TMAXX + warm
     TMINN <- TMINN + warm
     if(timeinterval != 12){ # spline from 12 days to chosen time interval
-      TMAXX1 <-suppressWarnings(spline(doys12,TMAXX,n=timeinterval,xmin=1,xmax=365,method="periodic"))
+      TMAXX1 <-suppressWarnings(spline(doys,TMAXX,n=timeinterval,xmin=1,xmax=365,method="periodic"))
       TMAXX<-rep(TMAXX1$y,nyears)
-      TMINN1 <-suppressWarnings(spline(doys12,TMINN,n=timeinterval,xmin=1,xmax=365,method="periodic"))
+      TMINN1 <-suppressWarnings(spline(doys,TMINN,n=timeinterval,xmin=1,xmax=365,method="periodic"))
       TMINN <- rep(TMINN1$y,nyears)
-      RHMAXX1 <-suppressWarnings(spline(doys12,RHMAXX,n=timeinterval,xmin=1,xmax=365,method="periodic"))
+      RHMAXX1 <-suppressWarnings(spline(doys,RHMAXX,n=timeinterval,xmin=1,xmax=365,method="periodic"))
       RHMAXX <- rep(RHMAXX1$y,nyears)
-      RHMINN1 <-suppressWarnings(spline(doys12,RHMINN,n=timeinterval,xmin=1,xmax=365,method="periodic"))
+      RHMINN1 <-suppressWarnings(spline(doys,RHMINN,n=timeinterval,xmin=1,xmax=365,method="periodic"))
       RHMINN <- rep(RHMINN1$y,nyears)
-      CCMAXX1 <-suppressWarnings(spline(doys12,CCMAXX,n=timeinterval,xmin=1,xmax=365,method="periodic"))
+      CCMAXX1 <-suppressWarnings(spline(doys,CCMAXX,n=timeinterval,xmin=1,xmax=365,method="periodic"))
       CCMAXX <- rep(CCMAXX1$y,nyears)
       CCMINN <- CCMAXX
-      WNMAXX1 <-suppressWarnings(spline(doys12,WNMAXX,n=timeinterval,xmin=1,xmax=365,method="periodic"))
+      WNMAXX1 <-suppressWarnings(spline(doys,WNMAXX,n=timeinterval,xmin=1,xmax=365,method="periodic"))
       WNMAXX<-rep(WNMAXX1$y,nyears)
-      WNMINN1 <-suppressWarnings(spline(doys12,WNMINN,n=timeinterval,xmin=1,xmax=365,method="periodic"))
+      WNMINN1 <-suppressWarnings(spline(doys,WNMINN,n=timeinterval,xmin=1,xmax=365,method="periodic"))
       WNMINN<-rep(WNMINN1$y,nyears)
       if(runmoist==0){
-        SoilMoist1 <-suppressWarnings(spline(doys12,SoilMoist,n=timeinterval,xmin=1,xmax=365,method="periodic"))
+        SoilMoist1 <-suppressWarnings(spline(doys,SoilMoist,n=timeinterval,xmin=1,xmax=365,method="periodic"))
         SoilMoist<-rep(SoilMoist1$y,nyears)
       }
     }
